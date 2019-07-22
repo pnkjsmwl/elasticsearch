@@ -1,0 +1,9 @@
+aws:
+  access:
+    key: AKIAVGINOJ2T3GJ5NJUD
+  secret:
+    key: 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
+elasticsearch:
+  host: vpc-es-domain-2-di6xlsckmoxve3qaggqqiskflm.us-east-1.es.amazonaws.com
+  port: 9200
+  endpoint: https://vpc-es-domain-1-hrx47m4atmipwkwtp5b5f7z4se.us-east-1.es.amazonaws.com
