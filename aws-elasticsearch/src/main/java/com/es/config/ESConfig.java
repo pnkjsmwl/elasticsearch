@@ -46,18 +46,6 @@ public class ESConfig {
 	@Value("${elasticsearch.endpoint}")
 	private String endpoint;
 
-	@Value("${elasticsearch.host}")
-	private String host;
-
-	@Value("${elasticsearch.port}")
-	private int port;
-
-	@Value("${aws.access.key}")
-	private String AWS_ACCESS_KEY;
-
-	@Value("${aws.secret.key}")
-	private String AWS_SECRET_KEY;
-
 	private static final String REGION = "us-east-1";
 	private static final String SERVICE_NAME = "es";
 	//private static final String EC2_ROLE_ARN = "arn:aws:iam::357047357095:role/MyEC2Role";
@@ -127,8 +115,9 @@ public class ESConfig {
 		return basicSessionCredentials;
 	}
 
-	@Bean
+	//@Bean
 	public AmazonS3 s3Client() throws IOException {
+		log.info("Creating S3...");
 		try {
 
 			File file = new File("/home/ec2-user/dummy.txt");
@@ -184,9 +173,9 @@ public class ESConfig {
 	}
 
 
-	@Bean(destroyMethod = "close") 
+	@Bean//(destroyMethod = "close") 
 	public RestHighLevelClient	restHighLevelClient() {
-
+		log.info("Creating ES Client...");
 		/*
 		 * BasicSessionCredentials basicSessionCredentials = getTempCred(EC2_ROLE_ARN);
 		 * 
@@ -214,5 +203,12 @@ public class ESConfig {
 		return client;
 
 	}
+
+	/*
+	 * @Bean public RestHighLevelClient restHighLevelClientNew() {
+	 * log.info("Creating ES Client 2..."); RestClientBuilder builder =
+	 * RestClient.builder(HttpHost.create(endpoint)); RestHighLevelClient client =
+	 * new RestHighLevelClient(builder); return client; }
+	 */
 
 }

@@ -1,6 +1,5 @@
 package com.es.service;
 
-import java.net.URI;
 import java.util.Map;
 
 import org.elasticsearch.action.get.GetRequest;
@@ -17,14 +16,11 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.es.model.Movie;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -126,27 +122,6 @@ public class ElasticService {
 					log.info("Response: "+gson.toJsonTree(sourceAsString));
 				}
 			}
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@GetMapping("/simple")
-	public void get() {
-
-		try
-		{
-			RestTemplate rt = new RestTemplate();
-
-			URI uri = UriComponentsBuilder.fromUriString(endpoint)
-					.build()
-					.toUri();
-
-			ResponseEntity<String> forEntity = rt.getForEntity(uri, String.class);
-			log.info("Status code : "+forEntity.getStatusCode());
-			log.info("Response : "+gson.toJson(forEntity.getBody()));
-
 		}
 		catch(Exception e) {
 			e.printStackTrace();
