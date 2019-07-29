@@ -1,24 +1,26 @@
 node {
-    def app
-    stage('Clone repository') {
-        checkout scm
-    }
-    stage('Build Project') {
-		if (isUnix()) {
-            sh '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore -f aws-elasticsearch/pom.xml clean package'
-         } else {
-            bat 'pwd'
-			bat 'mvn -version'
-            bat 'mvn -Dmaven.test.failure.ignore -f aws-elasticsearch/pom.xml clean package'
-         }
-        }
-    stage('Build image') {
-        app = docker.build("pnkjsmwl/elasticsearch", "aws-elasticsearch")
-    }
-	stage('Push image') {
-        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-            app.push("${env.BUILD_NUMBER}")
-            app.push("latest")
-        }
-    }
+	withMaven(maven:'maven') {
+		def app
+		stage('Clone repository') {
+			checkout scm
+		}
+		stage('Build Project') {
+			if (isUnix()) {
+				sh '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore -f aws-elasticsearch/pom.xml clean package'
+			} else {
+				bat 'pwd'
+				bat 'mvn -version'
+				bat 'mvn -Dmaven.test.failure.ignore -f aws-elasticsearch/pom.xml clean package'
+			}
+		}
+		stage('Build image') {
+			app = docker.build("pnkjsmwl/elasticsearch", "aws-elasticsearch")
+		}
+		stage('Push image') {
+			docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+				app.push("${env.BUILD_NUMBER}")
+				app.push("latest")
+			}
+		}
+	}
 }
